@@ -14,7 +14,8 @@ public class Customer {
     @GeneratedValue
     private UUID id;
     private String name;
-    private String brand;
+    private String address;
+    private String phone;
 
     public UUID getId() {
         return id;
@@ -28,11 +29,19 @@ public class Customer {
         this.name = name;
     }
 
-    public String getBrand() {
-        return brand;
+    public String getAddress() {
+        return address;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

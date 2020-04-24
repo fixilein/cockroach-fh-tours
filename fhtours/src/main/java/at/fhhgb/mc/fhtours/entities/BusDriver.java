@@ -7,15 +7,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.UUID;
 
-@Entity(name = "DRIVER")
+@Entity(name = "BUSDRIVER")
 @Data
-public class Driver {
+public class BusDriver {
     @Id
     @GeneratedValue
     private UUID id;
     private String name;
-    private String address;
-    private String phone;
 
     public UUID getId() {
         return id;
@@ -27,21 +25,5 @@ public class Driver {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 }
