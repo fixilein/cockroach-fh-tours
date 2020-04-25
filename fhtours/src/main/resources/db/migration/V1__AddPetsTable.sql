@@ -1,8 +1,7 @@
-
 CREATE TABLE bus
 (
-    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    name STRING,
+    id    UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    name  STRING,
     brand STRING
 );
 
@@ -11,42 +10,43 @@ VALUES ('TestBus', 'Audi');
 
 CREATE TABLE busdriver
 (
-    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    id   UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     name STRING
 );
 
-INSERT INTO busdriver (name) VALUES ('Test Driver');
+INSERT INTO busdriver (name)
+VALUES ('Test Driver');
 
 CREATE TABLE customer
 (
-    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    name STRING,
+    id      UUID   DEFAULT gen_random_uuid() PRIMARY KEY,
+    name    STRING,
     address STRING DEFAULT '',
-    phone STRING DEFAULT ''
+    phone   STRING DEFAULT ''
 );
 
 CREATE TABLE location
 (
-    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    id   UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     name STRING
 );
 
 CREATE TABLE trip
 (
-    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    date DATE,
-    driver UUID,
-    bus UUID,
-    destination UUID
+    id          UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    date        DATE,
+    driver      UUID REFERENCES busdriver (id),
+    bus         UUID REFERENCES bus (id),
+    destination UUID REFERENCES location (id)
 );
 
 CREATE TABLE booking
 (
-    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    booked_date DATE,
-    price DECIMAL,
+    id             UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    booked_date    DATE,
+    price          DECIMAL,
     payment_option STRING,
-    payment_date DATE,
-    trip UUID,
-    customer UUID
+    payment_date   DATE,
+    trip           UUID REFERENCES trip (id),
+    customer       UUID REFERENCES customer (id)
 );
