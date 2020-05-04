@@ -1,0 +1,33 @@
+#!/bin/sh
+
+NAME="fh-tours"
+SERVER="http://localhost"
+PORT="8081"
+
+help() {
+    echo ""
+    echo "Basic usage:"
+    echo "      $NAME get busdriver|bus|destination|trip|location|booking|customer"
+    echo "e.g.: $NAME get bus"
+    echo ""
+    echo "      $NAME post busdriver|bus|destination|trip|location|booking|customer <JSON>"
+    echo "e.g.: $NAME post busdriver" \''{"name":"Bernd"}'\'
+}
+
+curl_get() {
+    curl "$SERVER:$PORT/$1" || help
+}
+
+curl_post() {
+    curl -i -X POST -H "Content-Type:application/json" -d "$2" "$SERVER:$PORT/$1" || help
+
+#curl -i -X POST -H "Content-Type:application/json" -d '{"name": "Mazie","type": "dog","inside": "true"}' http://localhost:8080/pets
+}
+
+
+case "$1" in
+	get) curl_get $2;;
+    post) curl_post $2 $3;;
+    *) help;; # default
+esac
+
