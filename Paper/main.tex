@@ -1,0 +1,31 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\usepackage{graphicx}
+\usepackage{float}
+\graphicspath{ {./images/} }
+
+\usepackage{todonotes}
+\usepackage{hyperref}
+
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\myparagraph}[1]{\paragraph{#1}\mbox{}\\}
+\newcommand{\mysubparagraph}[1]{\subparagraph{#1}\mbox{}\\}
+
+
+\title{CockroachDB}
+\author{Emanuel Kranjec \& Felix Tröbinger}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\include{chapters/how-to}
+
+
+\bibliographystyle{unsrt}
+\bibliography{references}
+\end{document}
+
