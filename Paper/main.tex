@@ -6,6 +6,9 @@
 \usepackage{float}
 \graphicspath{ {./images/} }
 
+\usepackage[nottoc]{tocbibind} % references in table of contents
+\usepackage{csquotes}
+
 \usepackage{todonotes}
 \usepackage{hyperref}
 
@@ -22,8 +25,10 @@
 \maketitle
 \tableofcontents
 
-\include{chapters/how-to}
+\include{chapters/structure}
+\include{chapters/introduction}
 
+\include{chapters/how-to}
 
 \bibliographystyle{unsrt}
 \bibliography{references}

@@ -20,8 +20,6 @@ curl_get() {
 
 curl_post() {
     curl -i -X POST -H "Content-Type:application/json" -d "$2" "$SERVER:$PORT/$1" || help
-
-#curl -i -X POST -H "Content-Type:application/json" -d '{"name": "Mazie","type": "dog","inside": "true"}' http://localhost:8080/pets
 }
 
 
