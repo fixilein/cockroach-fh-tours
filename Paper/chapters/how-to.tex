@@ -19,14 +19,14 @@ This example will create a cluster of three connected nodes. The first one is cr
 
 \begin{verbatim}
 docker run -d \
---name=roach1 \
---hostname=roach1 \
---net=roachnet \
--p 26257:26257 -p 8080:8080  \
--v "${PWD}/roach1:/cockroach/cockroach-data"  \
-cockroachdb/cockroach:latest start \
---insecure \
---join=roach1,roach2,roach3
+    --name=roach1 \
+    --hostname=roach1 \
+    --net=roachnet \
+    -p 26257:26257 -p 8080:8080  \
+    -v "${PWD}/roach1:/cockroach/cockroach-data"  \
+    cockroachdb/cockroach:latest start \
+    --insecure \
+    --join=roach1,roach2,roach3
 \end{verbatim}
 
 The node is connected to the previously created bridge network and given a name, \verb|roach1| in this case.
@@ -71,13 +71,13 @@ CockroachDB uses the \emph{PostgreSQL} dialect.
 Accessing the admin web-interface user interface is as easy as navigating to \verb|localhost:8080| in a browser. Port 8080 is used because the host port 8080 is mapped to port 8080 on \verb|roach1|. If this is already in use by another application running on the host machine, port 8080 within the container can be remapped to a different port on the host machine. This would be done by changing \verb|-p 8080:8080| to \verb|-p <YOUR-PORT>:8080| in the command that started the first node.
 
 \begin{figure}[H]
-    \caption{Cluster Overview}
     \includegraphics[width=\textwidth]{overview}
+    \caption{Cluster Overview}
     \label{fig:overview}
 \end{figure}
 
 The first view the user is greeted with is the overview of the cluster which can be seen in Figure \ref{fig:overview}. This view shows all nodes connected to the cluster and the cluster capacity as well as the capacities for every single node.
-Also visible is the amount of failing and failed nodes. In the \emph{Replication Status} one can see how many ranges/cells are stored and replicated across all CockroachDB nodes. 
+Also visible is the amount of failing and failed nodes. In the \emph{Replication Status} one can see how many ranges are stored and replicated across all CockroachDB nodes. 
 
 \medskip
 In the above figure, the three previously created nodes are visible and all running. Note that every node thinks its full capacity regarding disk and memory usage are that of the main host. So in this case all three nodes assume that they can use the entirety of remaining disk space and RAM even though they really have to share these resources with the rest of the CockroachDB nodes (or really any other container or service) that also happens to run on the host machine.  
@@ -87,8 +87,8 @@ Clicking on the \emph{Logs} button next to the node in the \emph{Live nodes} vie
 
 \begin{figure}[H]
     \centering
-    \caption{The CockroachDB Web-Interface Dashboard}
     \includegraphics[width=\textwidth]{dashboard}
+    \caption{The CockroachDB Web-Interface Dashboard}
     \label{fig:dashboard}
 \end{figure}
 
@@ -98,15 +98,15 @@ In this example we created tables and inserted data on the first node. This is v
 On the right-hand side a list of events that occurred in the database system is visible. In the example you can see that the latest events were the creation of the database and the tables therein.
 
 \begin{figure}[H]
-    \caption{View of databases}
     \includegraphics[width=\textwidth]{databases}
+    \caption{View of databases}
     \label{fig:databases}
 \end{figure}
 The \emph{Databases} view show a list of all databases and lists their tables. Note that it does not display contents of the database.
 
 \begin{figure}[H]
-    \caption{View of statements}
     \includegraphics[width=\textwidth]{statements}
+    \caption{View of statements}
     \label{fig:statements}
 \end{figure}
 
