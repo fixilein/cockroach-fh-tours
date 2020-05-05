@@ -68,11 +68,26 @@ companions.\\
 \graycode{
 	txnB -> txn3, txn4, txn5
 }
-The TxnWaitQueue gets manipulated only by the \todo{direct link to leaseholder} leaseholder which holds the transaction 
+\\The TxnWaitQueue gets manipulated only by the \todo{direct link to leaseholder} leaseholder which holds the transaction 
 records. The queue receives a signal when a transaction got comitted or aborted. Based on this signal it let's particular
 transactions execute again.\\
 Deadlocks are handled by choosing and aborting a random affected transaction.
 
 \section{Transaction pipelining}
+To reduce latency when making transaction with multiple writes CockroachDB is pipelining those transactions. Pipelining in this
+context means all of the affected ranges receive the write intents and write it to the disc in parallel when the transaction got
+commited. \\More specifically the gateway node sends the statement to the leaseholders at first and then the leaseholders convert
+those statements into write intents. After spreading the write intents within the particular range and receiving confirmations
+from all nodes the transaction is considered as commited.\\\\
+In the example below the resulting write intents are because of their UUIDs probably in different ranges. This would be an ideal
+case because it would be fully parallelized.\\\\
+\code{
+        BEGIN;\\
+        INSERT into kv (key, value) VALUES ('apple', 'red');\\
+        INSERT into kv (key, value) VALUES ('banana', 'yellow');\\
+        INSERT into kv (key, value) VALUES ('orange', 'orange');\\
+        COMMIT;\\
+}
+
 
 \end{document}
