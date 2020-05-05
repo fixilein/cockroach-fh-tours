@@ -58,25 +58,3 @@ As for price, Cockroach Labs invite customers to contact them.
 On the CockroachDB page for pricing the company states that \textbf{CockroachDB Core} is open-source,\cite{cockroach-pricing} yet an article covering the licensing of the product explains that this version of the database is not actually open-source according to OSI’s Open Source Definition (though the source code is still viewable to anyone).\cite{cockroach-license}
 A more truthful description would be \emph{source-available}.
 This version however is free to download and use. 
-
-\subsection{Basic Replication and Distribution}
-CockroachDB consists of a cluster of nodes where each node stores data independently.
-CockroachDB stores its data in so called \emph{ranges}. When a range exceeds 64 mebibyte (MiB $ = 1024^2$ bytes) the it is split up into two ranges. Each range is then replicated (the default amount of replication is three) and each one of these replicas is stored on a different node.
-
-\begin{figure}[H]
-    \includegraphics[width=\textwidth]{horizontal-scaling}
-    \caption{Range Distribution \& Rebalancing in CockroachDB\cite{cockroach-newstack}}
-    \label{fig:scaling}
-\end{figure}
-
-
-Figure \ref{fig:scaling} visualizes the range splitting happening in CockroachDB. This happens indefinitely and nodes strive to have a relatively balanced and consistent size.
-
-\medskip
-For each range there exists a \emph{leader} who's purpose it is to coordinate read and write access. A leader along with enough followers has to agree before a write action is committed.
-Read access don't have to be coordinated with all followers, in this case the leader sends the result to the client without consulting it's followers. This greatly increases performance and speed.
-When interacting with CockroachDBs SQL API developers or users can choose to communicate with any given node of the cluster.
-If performing a write request on a node that cannot handle the request because it is not the leader, it finds the node who is and is able to fulfill the request.
-\cite{cockroach-architecture}
-
-
