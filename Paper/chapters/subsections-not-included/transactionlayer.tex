@@ -1,26 +1,12 @@
-\documentclass[12pt,a4paper]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[ngerman]{babel}
-\usepackage[T1]{fontenc}
-\usepackage{hyperref}
-\usepackage{todonotes}
-
-\newcommand{\code}[1]{\texttt{#1}}
-\definecolor{codegray}{gray}{0.9}
-\newcommand{\graycode}[1]{\colorbox{codegray}{\texttt{#1}}}
-
-\newcommand{\myparagraph}[1]{\paragraph{#1}\mbox{}\\}
-\newcommand{\mysubparagraph}[1]{\subparagraph{#1}\mbox{}\\}
-
-
-\begin{document}
+\subsection{Transaction Layer}
+\emph{author: Emanuel Kranjec}\bigskip
 
 In CockroachDB ACID transactions are fully supported in order to provide consistency. To ensure this every statement in 
 CockroachDB is basically a transaction because by default 'autocommit mode' is enabled. Furthermore there is an own protocol
 to handle those transactions cross-range and cross-table. 'Parallel commit' is the name of the atomic commit protocol and in
 combination with transaction pipelining it reduces significantly the latency of such operations.
 
-\section{Writing and reading}
+\subsubsection{Writing and reading}
 To provide consistency in distributed transactions CockroachDB creates write intents and a transaction record.
 
 \paragraph{Write intents} provide the uncommited transaction writes to other tables/ranges like the multi-version concurrency 
@@ -33,20 +19,20 @@ transaction record it decides based on the timestamp the validity of the write i
 writes from this transaction. Thus other transactions can check if this one is already commited and therefore in an
 consistent state.
 
-\section{Parallel commits}
+\subsubsection{Parallel commits}
 Depending on the state of the transaction record CockroachDB commits or restart the transaction. If the transaction record
 says it is in 'STAGING' state the transaction gets checked on whether it is successfully replicated across the cluster. 
 If that is true the cleanup phase begins by changing the transaction record state to 'COMMITED', resolving the write intents 
 to MVCC values and deleting afterwards these writes.
 
-\section{Isolation levels}
+\subsubsection{Isolation levels}
 Even though there are many ANSI transaction levels, CockroachDB decided to only support the 'SERIALIZABLE' level.
 This decision is based on a research paper from 2017, named \href{http://www.bailis.org/papers/acidrain-sigmod2017.pdf}
 {'ACIDRain: Concurrency-Related Attacks on Database-Backed Web Applications'} which shows the vulnerability of concurrent 
 ACID transactions.\\
 Previously the 'SNAPSHOT' level was also supported but the security aspect was valued higher to transaction throughput.
 
-\section{Transaction conflicts}
+\subsubsection{Transaction conflicts}
 \label{sec:transactionconflicts}
 CockroachDB handles a transaction conflict by the metrics priority and transaction record.\\\\
 When there are for example two write intents which use the same key firstly the priority of there transaction gets compared.
@@ -57,7 +43,7 @@ decision the write intent which encountered the other one enters the TxnWaitQueu
 \paragraph{Heartbeat} timestamps are there to evaluate if a transaction is abandoned. Active transactions are 
 responsible for periodically updating it on its central transaction record. 
 
-\section{TxnWaitQueue}
+\subsubsection{TxnWaitQueue}
 As already mentioned in \nameref{sec:transactionconflicts} if there is a write/write conflict the last option is to push one
 transaction into the TxnWaitQueue. It is a simple map which keeps track of blocking transaction IDs and their blocked 
 companions.\\
@@ -67,12 +53,12 @@ companions.\\
 \graycode{
 	txnB -> txn3, txn4, txn5
 }
-\\The TxnWaitQueue gets manipulated only by the \todo{direct link to leaseholder} leaseholder which holds the transaction 
+\\The TxnWaitQueue gets manipulated only by the leaseholder which holds the transaction 
 records. The queue receives a signal when a transaction got comitted or aborted. Based on this signal it let's particular
 transactions execute again.\\
 Deadlocks are handled by choosing and aborting a random affected transaction.
 
-\section{Transaction pipelining}
+\subsubsection{Transaction pipelining}
 To reduce latency when making transaction with multiple writes CockroachDB is pipelining those transactions. Pipelining in this
 context means all of the affected ranges receive the write intents and write it to the disc in parallel when the transaction got
 commited. \\More specifically the gateway node sends the statement to the leaseholders at first and then the leaseholders convert
@@ -87,6 +73,3 @@ case because it would be fully parallelized.\\\\
         INSERT into kv (key, value) VALUES ('orange', 'orange');\\
         COMMIT;\\
 }
-
-
-\end{document}

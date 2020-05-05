@@ -1,26 +1,13 @@
-\documentclass[12pt,a4paper]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[ngerman]{babel}
-\usepackage[T1]{fontenc}
-\usepackage{hyperref}
-\usepackage{todonotes}
+\subsection{Storage Layer}
+\emph{author: Emanuel Kranjec}\bigskip
 
-\newcommand{\code}[1]{\texttt{#1}}
-\definecolor{codegray}{gray}{0.9}
-\newcommand{\graycode}[1]{\colorbox{codegray}{\texttt{#1}}}
-
-\newcommand{\myparagraph}[1]{\paragraph{#1}\mbox{}\\}
-\newcommand{\mysubparagraph}[1]{\subparagraph{#1}\mbox{}\\}
-
-\begin{document}
 Not only the lookup table of the cluster is organized in key-value pairs also the actual data is stored as such. CockroachDB
 itself doesn't manage the embedded database storing process.\\
 For this purpose they are using the high performance embedded database RocksDB. RocksDB also stores data in the form of 
 key-values like CockroachDB does it in the lookup table. Two instaces of RocksDB are on each store. One for holding the write 
-intents described in \todo{reference to transaction layer} the transaction layer chapter and the other one to store the 
+intents described in the transaction layer chapter and the other one to store the 
 persistent data.\\\\
 Furthermore CockroachDB uses MVCC for concurrency purposes. Therefore it is also able to time-travel as described in the SQL:2011 
 standard. You can get back as far as the garbage collection got.\\
 Garbage collection occurs when a MVCC value exceeds a particular garbage collection period to free memory. The period can be set
 from cluster to table level individually.
-\end{document}

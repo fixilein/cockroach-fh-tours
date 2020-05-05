@@ -1,25 +1,11 @@
-\documentclass[12pt,a4paper]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[ngerman]{babel}
-\usepackage[T1]{fontenc}
-\usepackage{hyperref}
-\usepackage{todonotes}
+\subsection{SQL Layer}
+\emph{author: Emanuel Kranjec}\bigskip
 
-\newcommand{\code}[1]{\texttt{#1}}
-\newcommand{\myparagraph}[1]{\paragraph{#1}\mbox{}\\}
-\newcommand{\mysubparagraph}[1]{\subparagraph{#1}\mbox{}\\}
-
-
-
-\begin{document}
-
-\section{Overview}
 To support working with relational data CockroachDB provides a SQL layer.\\ \\
 With the support of the SQL API developers are able to run familiar SQL queries. When running those statements the cluster gets an request, which initiates to write or read the particular data ultimately as key-value (KV) pairs into the storage layer.
 Therefore the layer converts beneath the surface these SQL statement into a load of KV operations, which get processed by the next layer called transaction layer.\\ \\
 Developers are even capable of choosing to which node a request should be sent. The receiving node can either process the request or it acts just as so-called gateway node. This is possible because CockroachDB's nodes behave symmetrically. Thus the use of load balancers has ideal prerequisites.
 
-\section{Components}
 \subsection{Relational Structure}
 One of the headline features of CockroachDB is the relational structured data storage. The data is organized in rows, columns, tables and even multiple databases. This ensures that relational key features like constraints are supported. Application developers don't need to built data validation into the application logic because the database already guarantees consistent data.
 
@@ -27,7 +13,7 @@ One of the headline features of CockroachDB is the relational structured data st
 To keep CockroachDB simple to use it implements a SQL API. The API makes use of a large portion of the ANSI SQL standard, but
 as usual in other databases too, some SQL features are differently implemented and not all features are supported. \\
 Besides the basic CRUD operations CockroackDB offers constraints like 'primary key', 'foreign key', 'unique', 'not null' and
-many more.\\
+many more.
 
 \subsubsection{Transaction}
 Even transactions are available to keep the database consistent. Until now CockroachDB has tried many approaches to guarantee
@@ -90,17 +76,4 @@ has the same type. This is called vectorized execution, since the idea is to ope
 	<table expr> NATURAL FULL [ OUTER ] JOIN <table expr>
 }
 
-\paragraph{Merge Joins}
-
-\paragraph{Hash Joins}
-
-\paragraph{Lookup Joins}
-
-
-
 The whole table of supported features is \href{https://www.cockroachlabs.com/docs/stable/sql-feature-support.html}{here}.
-
-\subsection{SQL Parser, Planner, Ececutor}
-
-
-\end{document}
