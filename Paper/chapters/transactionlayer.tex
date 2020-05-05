@@ -15,7 +15,6 @@
 
 \begin{document}
 
-\section{Overview}
 In CockroachDB ACID transactions are fully supported in order to provide consistency. To ensure this every statement in 
 CockroachDB is basically a transaction because by default 'autocommit mode' is enabled. Furthermore there is an own protocol
 to handle those transactions cross-range and cross-table. 'Parallel commit' is the name of the atomic commit protocol and in
